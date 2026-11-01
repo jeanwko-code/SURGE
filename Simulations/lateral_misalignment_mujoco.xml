@@ -1,0 +1,126 @@
+<mujoco model="lateral_test">
+    <compiler angle="radian" meshdir="../meshes/" inertiafromgeom="auto"/>
+    <asset>
+        <mesh name="CHASSIS" file="BASE.STL" scale="0.001 0.001 0.001" />
+        <mesh name="FRW" file="FRW.STL" scale="1 1 1" />
+        <mesh name="FLW" file="FLW.STL" scale="1 1 1" />
+        <mesh name="BRW" file="BRW.STL" scale="1 1 1" />
+        <mesh name="BLW" file="BLW.STL" scale="1 1 1" />
+        <mesh name="CONNECTOR" file="CONNECTOR.STL" scale="0.001 0.001 0.001" />
+        <mesh name="FEMALE" file="FEMAlE.STL" scale="0.001 0.001 0.001"/>
+    </asset>
+
+    <visual>
+        <global offwidth="1920" offheight="1080"/>
+        <quality shadowsize="4096" offsamples="8" numslices="30" numstacks="30"/>
+        <headlight active="0"/> 
+    </visual>
+
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="512"/>
+        <texture type="2d" name="blue_ground" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.15 0.25" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+        <material name="blue_mat" texture="blue_ground" texuniform="true" texrepeat="5 5" reflectance="0.2" roughness="0.5"/>
+    </asset>
+
+    <worldbody>
+        <light pos="0 0 5" dir="0 0 -1" directional="true" castshadow="true" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3"/>
+        <light pos="2 2 4" dir="-0.5 -0.5 -1" directional="false" castshadow="false" diffuse="0.3 0.3 0.3"/>
+
+        <geom name="floor" type="plane" size="0 0 0.05" material="blue_mat"/>
+        
+        <body name="CHASSIS" pos = "0 0 0.0325">
+            <freejoint name = "mobility"/>
+            <geom name="chassis_visual" type = "mesh" mesh="CHASSIS" rgba = "0.7 0.7 0.7 1"/> 
+            <body name="CONNECTOR" pos="0.0681 0.025 0.03">
+                <geom name="CONNECTOR" type="mesh" mesh="CONNECTOR"/>
+                <joint name="connector_joint" type="hinge" axis="0 0 1" range="-0.6 0.6" limited="true" stiffness="0.05" springref="0" damping="0.005"/>
+            </body>
+            <body name="BRW" pos = "0.013 0.005 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="BRW" type="mesh" mesh="BRW"/>
+                <joint name="BRW_J" type="hinge" axis="0 1 0"/>
+            </body>
+            <body name = "BLW" pos = "0.013 0.045 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="BLW" type="mesh" mesh="BLW"/>
+                <joint name="BLW_J" type = "hinge" axis="0 1 0"/>
+            </body>
+            <body name="FRW" pos = "0.062 0.005 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="FRW" type="mesh" mesh="FRW"/>
+                <joint name="FRW_J" type="hinge" axis="0 1 0"/>
+            </body>
+            <body name="FLW" pos="0.062 0.005 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="FLW" type="mesh" mesh="FLW"/>
+                <joint name="FLW_J" type="hinge" axis="0 1 0"/>
+            </body>
+        </body>
+        <body name="CHASSIS_F" pos= "0.5 0.065 0.0" euler="0 0 3.14159">
+            </freejoint>
+            <geom name="chassis_f_visual" type = "mesh" mesh="CHASSIS" rgba = "0.7 0.7 0.7 1"/> 
+            <body name="FEMALE" pos="0.0681 0.025 0.03">
+                <geom name="FEMALE_visual" type="mesh" mesh="FEMALE" contype="0" conaffinity="0" rgba="0.8 0.5 0.2 1"/>
+                <frame pos="0.08874 0 0.00155" euler="0 0 3.14159">
+                    <geom type="box" pos="0.01567 0.01134 0.00000" quat="-0.68819 0.68819 -0.16246 0.16246" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.01096 0.00294" quat="-0.77213 0.59248 -0.18228 0.13986" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00982 0.00567" quat="-0.84286 0.48662 -0.19897 0.11488" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00802 0.00802" quat="-0.89916 0.37245 -0.21226 0.08792" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00567 0.00982" quat="-0.94009 0.25190 -0.22192 0.05946" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00294 0.01096" quat="-0.96492 0.12703 -0.22779 0.02999" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>  
+                    <geom type="box" pos="0.01567 0.00000 0.01134" quat="-0.97325 0.00000 -0.22975 0.00000" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00294 0.01096" quat="-0.96492 -0.12703 -0.22779 -0.02999" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00567 0.00982" quat="-0.94009 -0.25190 -0.22192 -0.05946" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00802 0.00802" quat="-0.89916 -0.37245 -0.21226 -0.08792" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00982 0.00567" quat="-0.84286 -0.48662 -0.19897 -0.11488" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.01096 0.00294" quat="-0.77213 -0.59248 -0.18228 -0.13986" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.01134 0.00000" quat="-0.68819 -0.68819 -0.16246 -0.16246" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.01096 -0.00294" quat="-0.59248 -0.77213 -0.13986 -0.18228" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00982 -0.00567" quat="-0.48662 -0.84286 -0.11488 -0.19897" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00802 -0.00802" quat="-0.37245 -0.89916 -0.08792 -0.21226" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00567 -0.00982" quat="-0.25190 -0.94009 -0.05946 -0.22192" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00294 -0.01096" quat="-0.12703 -0.96492 -0.02999 -0.22779" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 -0.00000 -0.01134" quat="-0.00000 -0.97325 -0.00000 -0.22975" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00294 -0.01096" quat="0.12703 -0.96492 0.02999 -0.22779" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00567 -0.00982" quat="0.25190 -0.94009 0.05946 -0.22192" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00802 -0.00802" quat="0.37245 -0.89916 0.08792 -0.21226" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.00982 -0.00567" quat="0.48662 -0.84286 0.11488 -0.19897" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="box" pos="0.01567 0.01096 -0.00294" quat="0.59248 -0.77213 0.13986 -0.18228" size="0.01677 0.00283 0.00150" rgba="1 0 0 0.3"/>
+                    <geom type="cylinder" pos="0.03150 0 0" euler="0 1.5708 0" size="0.00550 0.00150" rgba="1 0 0 0.3"/>    
+                </frame>
+                <joint name="female_joint" type="hinge" axis="0 0 1" range="-0.6 0.6" limited="true" stiffness="0.05" springref="0" damping="0.005"/>
+            </body>
+            <body name="BRW_f" pos = "0.013 0.005 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="BRW_f" type="mesh" mesh="BRW"/>
+            </body>
+            <body name = "BLW_f" pos = "0.013 0.045 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="BLW_f" type="mesh" mesh="BLW"/>
+            </body>
+            <body name="FRW_f" pos = "0.062 0.005 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="FRW_f" type="mesh" mesh="FRW"/>
+            </body>
+            <body name="FLW_f" pos="0.062 0.005 0.01">
+                <inertial pos="0 0 0" mass="0.05" fullinertia="1e-4 1e-4 1e-4 0 0 0"/>
+                <geom name="FLW_f" type="mesh" mesh="FLW"/>
+            </body>
+        </body>
+
+    </worldbody>
+
+    <tendon>
+        <fixed name="drive">
+            <joint joint="BRW_J" coef="1"/>
+            <joint joint="BLW_J" coef="1"/>
+            <joint joint="FRW_J" coef="1"/>
+            <joint joint="FLW_J" coef="1"/>
+        </fixed>
+    </tendon>
+
+    <actuator>
+        <motor name="drive_motor" tendon="drive" ctrlrange="-0.4 0.4" gear="0.01"/>
+    </actuator>
+</mujoco>
